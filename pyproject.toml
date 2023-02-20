@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "harrevelt_tools"
+version = "0.0.2"
+authors = [
+  { name="S Harrevelt", email="author@example.com" },
+]
+description = "This package is the result of sweat and tears"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/zwep"
+"Bug Tracker" = "https://github.com/zwep"
