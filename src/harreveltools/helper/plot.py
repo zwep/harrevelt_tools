@@ -2,10 +2,12 @@ import matplotlib.pyplot as plt
 from matplotlib.backend_bases import MouseButton
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
+import os
 import numpy as np
 import matplotlib.gridspec as gridspec
 from mpl_toolkits.mplot3d import Axes3D
 import itertools
+import helper.data_transform as helper_transform
 
 
 class ListPlot:
@@ -36,14 +38,14 @@ class ListPlot:
                     self.vmin = []
                     temp_img_list = []
                     for i_array in image_list:
-                        temp_vmin = [(0, harray.get_proper_scaled_v2(x, patch_shape=128, stride=32)) for x in i_array]
-                        temp_img = harray.scale_minmax(i_array, axis=(-2, -1))
+                        temp_vmin = [(0, helper_transform.get_proper_scaled_v2(x, patch_shape=128, stride=32)) for x in i_array]
+                        temp_img = helper_transform.scale_minmax(i_array, axis=(-2, -1))
                         self.vmin.append(temp_vmin)
                         temp_img_list.append(temp_img)
                     image_list = temp_img_list
                 else:
-                    self.vmin = [(0, harray.get_proper_scaled_v2(x, patch_shape=128, stride=32)) for x in image_list]
-                    image_list = harray.scale_minmax(image_list, axis=(-2, -1))
+                    self.vmin = [(0, helper_transform.get_proper_scaled_v2(x, patch_shape=128, stride=32)) for x in image_list]
+                    image_list = helper_transform.scale_minmax(image_list, axis=(-2, -1))
             else:
                 print('Vmin is set AND proper scaling is turned on. Defaulting to vmin')
 

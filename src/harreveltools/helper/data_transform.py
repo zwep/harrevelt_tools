@@ -23,6 +23,7 @@ from typing import Tuple, List, Union
 import scipy.optimize
 import skimage.util.dtype
 import skimage.transform as sktransform
+import math
 
 
 def aggregate_dict_mean_value(d, level=0, agg_dict=None):
@@ -228,6 +229,21 @@ def apply_crop_axis(x, crop_coords, marge=0, axis=0):
     else:
         cropped_x = x[:, (min_x - marge):(max_x + marge)]
     return cropped_x
+
+
+def get_square(x):
+    """
+    Used to get an approximation of the square of a number.
+    Needed to place N plots on a equal sized grid.
+    :param x:
+    :return:
+    """
+    x_div = simple_div(x)
+    x_sqrt = math.sqrt(x)
+    diff_list = [abs(y - x_sqrt) for y in x_div]
+    res = diff_list.index(min(diff_list))
+    # Return largest first...
+    return sorted([x_div[res], x // x_div[res]])[::-1]
 
 
 def get_crop_coords_center(image_shape, width):
@@ -1405,6 +1421,7 @@ def nested_dict_to_df(values_dict, column_name="0"):
     # df.columns = df.columns.map("{0[1]}".format)
     df.columns = [column_name]
     return df
+
 
 if __name__ == "__main__":
     import numpy as np
