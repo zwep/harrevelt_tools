@@ -25,6 +25,30 @@ import skimage.util.dtype
 import skimage.transform as sktransform
 import math
 
+"""
+
+There is no clear concensus in my head what 'analytics'  should be and what 'data_transform'  should be
+
+
+"""
+
+
+def listdict2dictlist(list_dict):
+    # Transforms a list of dictionaries to a dictionary of lists
+    set_of_keys = set(itertools.chain(*[list(x.keys()) for x in list_dict]))
+    temp_dict = {k: [] for k in set_of_keys}
+    for i_key in set_of_keys:
+        temp_list = [[v for k, v in x_dict.items() if k == i_key] for x_dict in list_dict]
+        temp_list = list(itertools.chain(*temp_list))
+        temp_dict[i_key].extend(temp_list)
+
+    return temp_dict
+
+
+def dictlist2listdict(dict_list):
+    # Transforms a dictionary of lists to a list of dictionaries
+    return [dict(zip(dict_list, t)) for t in zip(*dict_list.values())]
+
 
 def aggregate_dict_mean_value(d, level=0, agg_dict=None):
     if agg_dict is None:
@@ -1421,6 +1445,21 @@ def nested_dict_to_df(values_dict, column_name="0"):
     # df.columns = df.columns.map("{0[1]}".format)
     df.columns = [column_name]
     return df
+
+
+def get_all_mid_slices(image_array, offset=(0, 0, 0)):
+    image_shape = np.array(image_array.shape)//2
+    image_ndim = image_array.ndim
+    ax_combinations = list(itertools.combinations(range(image_ndim), 2))
+    sliced_array = []
+    for i_ax_comb in ax_combinations:
+        slice_list = [slice(None)] * image_ndim
+        remaining_ax = set(range(image_ndim)).difference(set(i_ax_comb))
+        # Create a list of slices..
+        for i_ax in list(remaining_ax):
+            slice_list[i_ax] = image_shape[i_ax] + offset[i_ax]
+        sliced_array.append(image_array[tuple(slice_list)])
+    return sliced_array
 
 
 if __name__ == "__main__":

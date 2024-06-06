@@ -7,6 +7,8 @@ import warnings
 import pydicom
 import nibabel
 import scipy
+import json
+import yaml
 
 
 def get_base_name(file_name):
@@ -15,6 +17,23 @@ def get_base_name(file_name):
         base_name = base_name.with_suffix('')
 
     return base_name.name
+
+
+def load_json(file_path):
+    with open(file_path, 'r') as f:
+        temp = f.read()
+    temp_json = json.loads(temp)
+    return temp_json
+
+
+def load_yaml(file_path):
+    with open(file_path, "r") as stream:
+        try:
+            yaml_file = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+
+    return yaml_file
 
 
 def get_ext(file_name):
